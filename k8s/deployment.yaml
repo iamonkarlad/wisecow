@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wisecow-deployment      
+  labels:
+    app: wisecow
+spec:
+  replicas: 2                     
+  selector:
+    matchLabels:
+      app: wisecow
+  template:
+    metadata:
+      labels:
+        app: wisecow
+    spec:
+      containers:
+        - name: wisecow
+          
+          image: onkarlad/wisecow:latest
+          imagePullPolicy: Always  
+          ports:
+            - containerPort: 4499 
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "100m"
+            limits:
+              memory: "128Mi"
+              cpu: "200m"

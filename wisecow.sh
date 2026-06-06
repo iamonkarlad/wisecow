@@ -7,40 +7,49 @@ rm -f $RSPFILE
 mkfifo $RSPFILE
 
 get_api() {
-	read line
-	echo $line
+    read line
+    echo $line
 }
 
 handleRequest() {
-    # 1) Process the request
-	get_api
-	mod=`fortune`
+    get_api
+    mod=$(fortune)
+    cow=$(cowsay "$mod")
+    
+    BODY="<html>
+<head><title>Wisecow</title></head>
+<body style='background:#000;color:#00ff00;font-family:monospace;padding:50px;'>
+<pre>${cow}</pre>
+</body></html>"
 
-cat <<EOF > $RSPFILE
-HTTP/1.1 200
+    LENGTH=${#BODY}
 
+cat <<RESPONSE > $RSPFILE
+HTTP/1.1 200 OK
+Content-Type: text/html
+Content-Length: $LENGTH
+Connection: close
 
-<pre>`cowsay $mod`</pre>
-EOF
+${BODY}
+RESPONSE
 }
 
 prerequisites() {
-	command -v cowsay >/dev/null 2>&1 &&
-	command -v fortune >/dev/null 2>&1 || 
-		{ 
-			echo "Install prerequisites."
-			exit 1
-		}
+    command -v cowsay >/dev/null 2>&1 &&
+    command -v fortune >/dev/null 2>&1 ||
+        {
+            echo "Install prerequisites: cowsay and fortune"
+            exit 1
+        }
 }
 
 main() {
-	prerequisites
-	echo "Wisdom served on port=$SRVPORT..."
-
-	while [ 1 ]; do
-		cat $RSPFILE | nc -lN $SRVPORT | handleRequest
-		sleep 0.01
-	done
+    prerequisites
+    echo "Wisdom served on port=$SRVPORT..."
+    while true; do
+        cat $RSPFILE | nc -lN $SRVPORT | handleRequest
+        sleep 0.01
+    done
 }
 
 main
