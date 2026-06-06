@@ -9,8 +9,9 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
+
   build-and-push:
-    name: Build & Push Docker Image
+    name: Build and Push Docker Image
     runs-on: ubuntu-latest
 
     steps:
@@ -41,22 +42,33 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Create Kind cluster
+        uses: helm/kind-action@v1.7.0
+        with:
+          cluster_name: wisecow
+
       - name: Set up kubectl
         uses: azure/setup-kubectl@v4
 
-      - name: Configure kubectl
-        run: |
-          mkdir -p $HOME/.kube
-          echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
-          chmod 600 $HOME/.kube/config
+      - name: Verify cluster
+        run: kubectl get nodes
 
-      - name: Update deployment image
+      - name: Deploy app
+        run: |
+          kubectl apply -f k8s/deployment.yaml
+          kubectl apply -f k8s/service.yaml
+
+      - name: Update image
         run: |
           kubectl set image deployment/wisecow-deployment \
             wisecow=${{ secrets.DOCKER_USERNAME }}/wisecow:${{ github.sha }}
+
+      - name: Wait for rollout
+        run: |
           kubectl rollout status deployment/wisecow-deployment --timeout=120s
 
       - name: Verify deployment
         run: |
           kubectl get pods
           kubectl get services
+
