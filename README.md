@@ -1,17 +1,17 @@
 # Cow wisdom web server
 
-## Prerequisites
 
-```
-sudo apt install fortune-mod cowsay -y
-```
-
-## How to use?
-
-1. Run `./wisecow.sh`
-2. Point the browser to server port (default 4499)
-
-## What to expect?
-![wisecow](https://github.com/iamonkarlad/wisecow/Images/Screenshot 2026-06-06 192324.png)
-## Output
+# Output
 Successfully Deployed application on K8S
+
+# Problem 1 - OUTPUT
+
+![alt text](<Images/Screenshot 2026-06-06 192324.png>)
+
+![alt text](<Images/Screenshot 2026-06-06 185938.png>)
+
+# Problem 2 - OUTPUT
+
+![alt text](<Images/Screenshot 2026-06-06 193753.png>)
+
+![alt text](<Images/Screenshot 2026-06-06 193920.png>)
