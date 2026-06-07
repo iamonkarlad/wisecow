@@ -1,16 +1,16 @@
 # Cow wisdom web server
 
 
-# Output
+# Output 
 Successfully Deployed application on K8S
 
-# Problem 1 - OUTPUT
+## Problem 1 - OUTPUT
 
 ![alt text](<Images/Screenshot 2026-06-06 192324.png>)
 
 ![alt text](<Images/Screenshot 2026-06-06 185938.png>)
 
-# Problem 2 - OUTPUT
+## Problem 2 - OUTPUT
 
 ![alt text](<Images/Screenshot 2026-06-06 193753.png>)
 
